@@ -105,12 +105,56 @@ void addCar(Node** head)
     printf("Car added successfully.\n");
 }
 
-/*  // Function to sell a car from the showroom
-void sellCar(Node** head) {
+// Function to sell a car from the showroom
+void sellCar(Node** head) 
+{
+    if (head == NULL || *head == NULL) 
+    {
+        printf("There are no cars in the showroom.\n");
+        return;
+    }
 
+    char registration[10];
+    printf("Enter the registration of the car to sell: ");
+    scanf("%9s", registration);
+
+    Node *temp = *head, *prev = NULL;
+    while (temp != NULL) {
+        if (strcmp(temp->car.registration, registration) == 0) {
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+
+    // Car not found
+    if (temp == NULL) {
+        printf("Car with registration %s not found in the showroom.\n", registration);
+        return;
+    }
+
+    // Check if the car is reserved
+    if (!temp->car.isReserved) {
+        printf("Car with registration %s has not been reserved and cannot be sold.\n", registration);
+        return;
+    }
+
+    // Car is found and reserved; proceed to sell (delete it from the list)
+    if (prev == NULL) {
+        // The car tat will be sold is the first car in the list
+        *head = temp->next;
+    } else {
+        // The car that will be sold is not the first car
+        prev->next = temp->next;
+    }
+
+    printf("Car with registration %s has been sold.\n", registration);
+    free(temp); 
 }
 
-// Function to reserve or unreserve a car
+
+
+/* // Function to reserve or unreserve a car
 void reserveUnreserveCar(Node** head) {
     
 }
@@ -146,10 +190,10 @@ int main() {
             case 1:
                 addCar(&head);
                 break;
-         /*  case 2:
+             case 2:
                 sellCar(&head);
                 break;
-            case 3:
+          /*  case 3:
                 reserveUnreserveCar(&head);
                 break;
             case 4:
