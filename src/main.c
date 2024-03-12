@@ -18,7 +18,7 @@ typedef struct
 typedef struct Node 
 {
     Car car;
-    struct Node* next;
+    struct Node* next;  
 } Node;
 
 // Helper function to validate car registration format
