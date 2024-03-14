@@ -34,7 +34,7 @@ void addCar(Node** head)
     Node* newNode = (Node*)malloc(sizeof(Node));
     if (newNode == NULL) 
     {
-        printf("Memory allocation failed.\n");
+        printf("Memory allocation failed.");
         return;
     }
 
@@ -46,7 +46,7 @@ void addCar(Node** head)
 
     if (!isValidRegistration(newNode->car.registration)) 
     {
-        printf("Invalid registration format.\n");
+        printf("Invalid registration format.");
         free(newNode);
         return;
     }
@@ -61,7 +61,7 @@ void addCar(Node** head)
     scanf("%d", &newNode->car.previousOwners);
     if (newNode->car.previousOwners < 0 || newNode->car.previousOwners > 3) 
     {
-        printf("Invalid number of previous owners.\n");
+        printf("Invalid number of previous owners.");
         free(newNode);
         return;
     }
@@ -77,7 +77,7 @@ void addCar(Node** head)
         scanf("%f", &newNode->car.reserveAmount);
         if (newNode->car.reserveAmount < 500.0 || newNode->car.reserveAmount > 1500.0) 
         {
-            printf("Invalid reserve amount.\n");
+            printf("Invalid reserve amount.");
             free(newNode);
             return;
         }
@@ -102,7 +102,7 @@ void addCar(Node** head)
         current->next = newNode; // this appends the new node 
     }
 
-    printf("Car added successfully.\n");
+    printf("Car added successfully.");
 }
 
 // Function to sell a car from the showroom
@@ -110,7 +110,7 @@ void sellCar(Node** head)
 {
     if (head == NULL || *head == NULL) 
     {
-        printf("There are no cars in the showroom.\n");
+        printf("There are no cars in the showroom.");
         return;
     }
 
@@ -129,35 +129,69 @@ void sellCar(Node** head)
 
     // Car not found
     if (temp == NULL) {
-        printf("Car with registration %s not found in the showroom.\n", registration);
+        printf("Car with registration %s not found in the showroom.", registration);
         return;
     }
 
     // Check if the car is reserved
     if (!temp->car.isReserved) {
-        printf("Car with registration %s has not been reserved and cannot be sold.\n", registration);
+        printf("Car with registration %s has not been reserved and cannot be sold.", registration);
         return;
     }
 
     // Car is found and reserved; proceed to sell (delete it from the list)
     if (prev == NULL) {
-        // The car tat will be sold is the first car in the list
+        // The car that will be sold is the first car in the list
         *head = temp->next;
     } else {
         // The car that will be sold is not the first car
         prev->next = temp->next;
     }
 
-    printf("Car with registration %s has been sold.\n", registration);
+    printf("Car with registration %s has been sold.", registration);
     free(temp); 
 }
 
 
 
-/* // Function to reserve or unreserve a car
+ // Function to reserve or unreserve a car
 void reserveUnreserveCar(Node** head) {
-    
+    if (head == NULL || *head == NULL) {
+        printf("There are no cars in the showroom.");
+        return;
+    }
+
+    char registration[10];
+    printf("Enter the registration of the car to reserve/unreserve: ");
+    scanf("%9s", registration);
+
+    Node *temp = *head;
+    while (temp != NULL) {
+        if (strcmp(temp->car.registration, registration) == 0) {
+            // Found the car
+            if (temp->car.isReserved) {
+                printf("Car is currently reserved. Unreserving it now.");
+                temp->car.isReserved = false;
+                temp->car.reserveAmount = 0.0;
+            } else {
+                printf("Car is currently not reserved. Reserving it now.");
+                temp->car.isReserved = true;
+                printf("Enter reserve amount (500-1500): ");
+                scanf("%f", &temp->car.reserveAmount);
+                if (temp->car.reserveAmount < 500.0 || temp->car.reserveAmount > 1500.0) {
+                    printf("Invalid reserve amount. Cancelling the reservation.");
+                    temp->car.isReserved = false;
+                    temp->car.reserveAmount = 0.0;
+                }
+            }
+            return;
+        }
+        temp = temp->next;
+    }
+
+    printf("Car with registration %s not found in the showroom.", registration);
 }
+
 
 // Function to view all cars in the showroom
 void viewCars(Node* head) {
