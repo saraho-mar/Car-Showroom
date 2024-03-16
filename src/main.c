@@ -95,7 +95,7 @@ void addCar(Node** head)
     {
         // Finds the last node
         Node* current = *head;
-        while (current->next != NULL) 
+         while (current->next != NULL) 
         {
             current = current->next;
         }
