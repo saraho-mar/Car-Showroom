@@ -157,7 +157,7 @@ void sellCar(Node** head)
  // Function to reserve or unreserve a car
 void reserveUnreserveCar(Node** head) {
     if (head == NULL || *head == NULL) {
-        printf("There are no cars in the showroom.");
+        printf("There are no cars in the showroom./n");
         return;
     }
 
@@ -192,16 +192,63 @@ void reserveUnreserveCar(Node** head) {
     printf("Car with registration %s not found in the showroom.", registration);
 }
 
-
 // Function to view all cars in the showroom
 void viewCars(Node* head) {
-    
+    if (head == NULL) 
+    {
+        printf("The showroom is currently empty.");
+        return;
+    }
+
+    printf("List of all cars in the showroom:\n");
+    while (head != NULL) {
+        printf("Registration: %s\n", head->car.registration);
+        printf("Make and Model: %s\n", head->car.makeAndModel);
+        printf("Colour: %s\n", head->car.colour);
+        printf("Previous Owners: %d\n", head->car.previousOwners);
+        printf("Reserved: %s\n", head->car.isReserved ? "Yes" : "No");
+        if (head->car.isReserved) {
+            printf("Reserve Amount: %.2f\n", head->car.reserveAmount);
+        }
+        printf("\n"); //This adds an extra line between the cars displayed which makes it mor readable/aesthetic 
+
+        head = head->next; // Move to the next car in the list
+    }
 }
 
-// Function to view a specific car in the showroom
+
+ // Function to view a specific car in the showroom
 void viewSpecificCar(Node* head) {
-   
-}  */
+    if (head == NULL) {
+        printf("There are no cars in the showroom.\n");
+        return;
+    }
+
+    char registration[10];
+    printf("Enter the registration of the car you want to view: ");
+    scanf("%9s", registration);
+
+    Node* current = head;
+    while (current != NULL) {
+        if (strcmp(current->car.registration, registration) == 0) {
+            // Car found, display details
+            printf("\nCar Details:\n");
+            printf("Registration: %s\n", current->car.registration);
+            printf("Make and Model: %s\n", current->car.makeAndModel);
+            printf("Colour: %s\n", current->car.colour);
+            printf("Previous Owners: %d\n", current->car.previousOwners);
+            printf("Reserved: %s\n", current->car.isReserved ? "Yes" : "No");
+            if (current->car.isReserved) {
+                printf("Reserve Amount: %.2f\n", current->car.reserveAmount);
+            }
+            return;
+        }
+        current = current->next;
+    }
+
+    printf("Car with registration %s not found in the showroom.\n", registration);
+}
+ 
 
 // Main function
 int main() {
@@ -216,7 +263,7 @@ int main() {
         printf("4. View all cars\n");
         printf("5. View a specific car\n");
         printf("6. Exit\n");
-        printf("Enter your choice: ");
+        // printf("My special function ");
         scanf("%d", &choice);
         getchar(); // Newline character 
 
@@ -225,20 +272,20 @@ int main() {
                 addCar(&head);
                 break;
              case 2:
-                sellCar(&head);
+                sellCar(&head); 
                 break;
-          /*  case 3:
+           case 3:
                 reserveUnreserveCar(&head);
                 break;
-            case 4:
+             case 4:
                 viewCars(head);
                 break;
             case 5:
                 viewSpecificCar(head);
-                break; */ 
-            case 6:
+                break; 
+          /*  case 6:
                 printf("Exiting...\n");
-                break;
+                break; */
             default:
                 printf("Invalid choice, please try again.\n");
         }
