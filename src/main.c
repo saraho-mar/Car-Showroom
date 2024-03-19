@@ -118,23 +118,23 @@ void sellCar(Node** head)
     printf("Enter the registration of the car to sell: ");
     scanf("%9s", registration);
 
-    Node *temp = *head, *prev = NULL;
-    while (temp != NULL) {
-        if (strcmp(temp->car.registration, registration) == 0) {
+    Node *current = *head, *prev = NULL;
+    while (current != NULL) {
+        if (strcmp(current->car.registration, registration) == 0) {
             break;
         }
-        prev = temp;
-        temp = temp->next;
+        prev = current;
+        current = current->next;
     }
 
     // Car not found
-    if (temp == NULL) {
+    if (current == NULL) {
         printf("Car with registration %s not found in the showroom.", registration);
         return;
     }
 
     // Check if the car is reserved
-    if (!temp->car.isReserved) {
+    if (!current->car.isReserved) {
         printf("Car with registration %s has not been reserved and cannot be sold.", registration);
         return;
     }
@@ -142,14 +142,14 @@ void sellCar(Node** head)
     // Car is found and reserved; proceed to sell (delete it from the list)
     if (prev == NULL) {
         // The car that will be sold is the first car in the list
-        *head = temp->next;
+        *head = current->next;
     } else {
         // The car that will be sold is not the first car
-        prev->next = temp->next;
+        prev->next = current->next;
     }
 
     printf("Car with registration %s has been sold.", registration);
-    free(temp); 
+    free(current); 
 }
 
 
@@ -165,28 +165,28 @@ void reserveUnreserveCar(Node** head) {
     printf("Enter the registration of the car to reserve/unreserve: ");
     scanf("%9s", registration);
 
-    Node *temp = *head;
-    while (temp != NULL) {
-        if (strcmp(temp->car.registration, registration) == 0) {
+    Node *current = *head;
+    while (current != NULL) {
+        if (strcmp(current->car.registration, registration) == 0) {
             // Found the car
-            if (temp->car.isReserved) {
+            if (current->car.isReserved) {
                 printf("Car is currently reserved. Unreserving it now.");
-                temp->car.isReserved = false;
-                temp->car.reserveAmount = 0.0;
+                current->car.isReserved = false;
+                current->car.reserveAmount = 0.0;
             } else {
                 printf("Car is currently not reserved. Reserving it now.");
-                temp->car.isReserved = true;
+                current->car.isReserved = true;
                 printf("Enter reserve amount (500-1500): ");
-                scanf("%f", &temp->car.reserveAmount);
-                if (temp->car.reserveAmount < 500.0 || temp->car.reserveAmount > 1500.0) {
+                scanf("%f", &current->car.reserveAmount);
+                if (current->car.reserveAmount < 500.0 || current->car.reserveAmount > 1500.0) {
                     printf("Invalid reserve amount. Cancelling the reservation.");
-                    temp->car.isReserved = false;
-                    temp->car.reserveAmount = 0.0;
+                    current->car.isReserved = false;
+                    current->car.reserveAmount = 0.0;
                 }
             }
             return;
         }
-        temp = temp->next;
+        current = current->next;
     }
 
     printf("Car with registration %s not found in the showroom.", registration);
